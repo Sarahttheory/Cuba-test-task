@@ -12,6 +12,13 @@ SELECT * FROM abc ORDER BY cnt ASC
 CREATE INDEX idx_name_cnt ON abc (name, cnt);
 CREATE INDEX idx_cnt ON abc (cnt);
 ```
+Для второго запроса даже лучше использовать составной индекс.
+Использование индекса на столбце cnt будет эффективно для фильтрации по значению cnt. 
+Однако фильтрация по name LIKE 'yyy%' не будет использовать этот индекс максимально эффективно из-за того, 
+что оператор LIKE с шаблоном, начинающимся с символа %, не может использовать индексы "с начала".
+```sql
+CREATE INDEX idx_cnt_name ON abc (cnt, name);
+```
 
 ## #2
 ### Задание
@@ -156,6 +163,7 @@ var f = function(a,b) { return a+b }
 while (true) {
     echo "Hello\n";
     sleep(15); // Приостановка выполнения на 15 секунд
+    exit(); // Завершаем выполнение
 }
 ?>
 ```
